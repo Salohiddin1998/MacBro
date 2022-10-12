@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 
 @Entity
 @AllArgsConstructor
@@ -19,7 +20,7 @@ public class Card {
 
     private String bankName;
 
-    private String cardNumber;
+    private BigInteger cardNumber;
 
     private double balance;
 
@@ -28,10 +29,8 @@ public class Card {
     @ManyToOne
     private CardType cardType;
 
-    @ManyToOne
-    private User user;
 
-    public Card(String bankName, String cardNumber, double balance, String term, CardType cardType) {
+    public Card(String bankName, BigInteger cardNumber, double balance, String term, CardType cardType) {
         this.bankName = bankName;
         this.cardNumber = cardNumber;
         this.balance = balance;

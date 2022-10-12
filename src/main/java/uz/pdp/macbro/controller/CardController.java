@@ -30,10 +30,10 @@ public class CardController {
         return cardService.delete(id);
     }
 
-//    @PostMapping
-//    public Result add(@RequestBody CardDto cardDto){
-//        return cardService.add(cardDto);
-//    }
+    @PostMapping
+    public Result add(@RequestBody CardDto cardDto){
+        return cardService.add(cardDto);
+    }
 
     @PutMapping("/{id}")
     public Result update(@PathVariable Integer id, @RequestBody CardDto cardDto){
