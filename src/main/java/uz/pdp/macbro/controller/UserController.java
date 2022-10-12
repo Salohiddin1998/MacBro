@@ -1,30 +1,46 @@
 package uz.pdp.macbro.controller;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import uz.pdp.macbro.projection.UserProjection;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import uz.pdp.macbro.dto.UserDto;
+import uz.pdp.macbro.entity.User;
+import uz.pdp.macbro.payload.Result;
 import uz.pdp.macbro.service.UserService;
+
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
-@RequiredArgsConstructor
-
+@RequestMapping("user")
 public class UserController {
-    private final UserService userService;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping
-    public List<UserProjection> getAllusersFromDb(){
-        List<UserProjection> allUsersFromDb = userService.getAllUsersFromDb();
-        return allUsersFromDb;
+    public List<User> all(){
+        return userService.all();
     }
 
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<?> deleteUserById(@PathVariable Integer id){
-//        userService.deleteUserById(id);
-//    }
+    @GetMapping("/{id}")
+    public User getId(@PathVariable Integer id){
+        return userService.getId(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public Result delete(@PathVariable Integer id){
+        return userService.delete(id);
+    }
+
+    @PostMapping
+    public Result add(@RequestBody UserDto userDto){
+        return userService.add(userDto);
+    }
+
+    @PutMapping("/{id}")
+    public Result update(@PathVariable Integer id, @RequestBody UserDto userDto){
+        return userService.update(id,userDto);
+
+    }
 
 }

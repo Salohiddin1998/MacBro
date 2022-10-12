@@ -19,4 +19,13 @@ public class Result {
         this.massage = massage;
         this.success = success;
     }
+
+    public Result(boolean success, Object object) {
+        this.success = success;
+        this.object = object;
+    }
+
+    public Result(boolean success) {
+        this.success = success;
+    }
 }
