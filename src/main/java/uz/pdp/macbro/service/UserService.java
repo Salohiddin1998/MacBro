@@ -3,8 +3,10 @@ package uz.pdp.macbro.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uz.pdp.macbro.dto.UserDto;
+import uz.pdp.macbro.entity.Card;
 import uz.pdp.macbro.entity.User;
 import uz.pdp.macbro.payload.Result;
+import uz.pdp.macbro.repository.CardRepository;
 import uz.pdp.macbro.repository.UserRepository;
 
 import java.util.List;
@@ -14,6 +16,9 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    CardRepository cardRepository;
 
     public List<User> all() {
         return userRepository.findAll();
@@ -29,7 +34,12 @@ public class UserService {
     public Result delete(Integer id) {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            List<Card> cards = user.getCards();
             userRepository.deleteById(id);
+            for (Card card : cards) {
+                cardRepository.deleteById(card.getId());
+            }
             return new Result("User deleted", true);
         }
         return new Result("User not found", false);
