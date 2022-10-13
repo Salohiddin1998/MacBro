@@ -9,6 +9,7 @@ import uz.pdp.macbro.payload.Result;
 import uz.pdp.macbro.repository.CardRepository;
 import uz.pdp.macbro.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +20,9 @@ public class UserService {
 
     @Autowired
     CardRepository cardRepository;
+
+    @Autowired
+    CardService cardService;
 
     public List<User> all() {
         return userRepository.findAll();
@@ -36,9 +40,13 @@ public class UserService {
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             List<Card> cards = user.getCards();
-            userRepository.deleteById(id);
+            List<Integer> cardList = new ArrayList<>() ;
             for (Card card : cards) {
-                cardRepository.deleteById(card.getId());
+                cardList.add(card.getId());
+            }
+            userRepository.deleteById(id);
+            for (Integer integer : cardList) {
+                cardRepository.deleteById(integer);
             }
             return new Result("User deleted", true);
         }
